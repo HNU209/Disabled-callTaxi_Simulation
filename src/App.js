@@ -8,7 +8,7 @@ import './css/app.css';
 
 
 const getRestData = dataName => {
-  const res = axios.get(`https://raw.githubusercontent.com/HNU209/Disabled_callTaxi_Simulation/main/src/data/${dataName}.json`);
+  const res = axios.get(`https://raw.githubusercontent.com/HNU209/Disabled-callTaxi_Simulation/main/src/data/${dataName}.json`);
   // const res = axios.get(`./data/${dataName}.json`);
   const result = res.then(r => r.data);
   return result;
