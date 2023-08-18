@@ -15,8 +15,8 @@ const getRestData = dataName => {
 }
 
 const App = () => {
-  const minTime = 0;
-  const maxTime = 1440;
+  const minTime = 360;
+  const maxTime = 1800;
   const initTripData = 1;
 
   const [time, setTime] = useState(minTime);
