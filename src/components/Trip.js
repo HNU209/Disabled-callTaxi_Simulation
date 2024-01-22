@@ -35,8 +35,8 @@ const DEFAULT_THEME = {
 };
 
 const INITIAL_VIEW_STATE = {
-  longitude: 126.994335,
-  latitude: 37.558058,
+  longitude: 126.9917937,
+  latitude: 37.5518911,
   zoom: 11,
   minZoom: 2,
   maxZoom: 20,
@@ -58,19 +58,29 @@ const currData = (data, time) => {
   return arr;
 }
 
+const currResult = (data, time) => {
+  const result = data.find(v => Number(v.time) === Math.floor(time));
+  return result;
+}
+
+
 const ICON_MAPPING = {
   marker: {x: 0, y: 0, width: 128, height: 128, mask: true}
 };
 
 const Trip = (props) => {
-  const animationSpeed = 1;
+  const animationSpeed = 5;
   const time = props.time;
   const minTime = props.minTime;
   const maxTime = props.maxTime;
 
   const DRIVER = props.data.DRIVER_TRIP;
+  const RELOCATION = props.data.RELOCATION_TRIP;
+  const G_MARKER = currData(props.data.GARAGE_MARKER, time);
   const D_MARKER = currData(props.data.DRIVER_MARKER, time);
   const P_MARKER = currData(props.data.PASSENGER_MARKER, time);
+
+  const CURRENT_RESULT = currResult(props.data.RESULT, time);
 
   const [animationFrame, setAnimationFrame] = useState('');
 
@@ -104,12 +114,36 @@ const Trip = (props) => {
       currentTime: time,
       shadowEnabled: false,
     }),
+    new TripsLayer({
+      id: 'RELOCATION',
+      data: RELOCATION,
+      getPath: d => d.route,
+      getTimestamps: d => d.timestamp,
+      getColor: [0, 153, 0] ,
+      opacity: 0.7,
+      widthMinPixels: 5,
+      trailLength: 1,
+      currentTime: time,
+      shadowEnabled: false,
+    }),
+    new ScatterplotLayer({
+      id: 'garage-marker',
+      data: G_MARKER,
+      getPosition: d => d,
+      getFillColor: [0, 255, 0],
+      getRadius: 10,
+      opacity: 0.1,
+      pickable: false,
+      radiusScale: 10,
+      radiusMinPixels: 1,
+      radiusMaxPixels: 10,
+    }),
     new ScatterplotLayer({
       id: 'driver-marker',
       data: D_MARKER,
       getPosition: d => d,
-      getFillColor: d => [255, 255, 255],
-      getRadius: d => 3,
+      getFillColor: [255, 255, 255],
+      getRadius: 3,
       opacity: 0.1,
       pickable: false,
       radiusScale: 6,
@@ -126,9 +160,9 @@ const Trip = (props) => {
       sizeMaxPixels: 20,
       sizeScale: 5,
       getIcon: d => 'marker',
-      getPosition: d => [d[0], d[1]],
+      getPosition: d => d,
       getSize: d => 10,
-      getColor: d => [0, 255, 255]
+      getColor: d => [255, 255, 0]
     }),
   ];
 
@@ -148,6 +182,14 @@ const Trip = (props) => {
       <h1 className='time'>
         TIME : {(String(parseInt(Math.round(time) / 60) % 24).length === 2) ? parseInt(Math.round(time) / 60) % 24 : '0'+String(parseInt(Math.round(time) / 60) % 24)} : {(String(Math.round(time) % 60).length === 2) ? Math.round(time) % 60 : '0'+String(Math.round(time) % 60)}
       </h1>
+      <div className='subtext'>
+        <div>- Number of In-service vehicles&nbsp;: {CURRENT_RESULT.driving_vehicle_num}</div>
+        <div>- Number of Idle vehicles&nbsp;: {CURRENT_RESULT.empty_vehicle_num}</div>
+        <div>- Number of passengers waiting&nbsp;: {CURRENT_RESULT.waiting_passenger_num}</div>
+        <div>- Current average waiting time&nbsp;: {CURRENT_RESULT.average_waiting_time}</div>
+        <div>- Cumulative number of passengers successfully dispatched&nbsp;: {CURRENT_RESULT.success_passenger_cumNum}</div>
+        <div>- Cumulative number of passengers failed dispatched&nbsp;: {CURRENT_RESULT.fail_passenger_cumNum}</div>
+      </div>
     </div>
   );
 }

@@ -3,27 +3,31 @@ import React, { useEffect, useState } from 'react';
 import Slider from '@mui/material/Slider';
 import axios, * as others from 'axios';
 import Trip from './components/Trip';
+import Report from './components/Report';
 import Splash from './components/Splash';
 import './css/app.css';
 
 
 const getRestData = dataName => {
-  const res = axios.get(`https://raw.githubusercontent.com/HNU209/Disabled-callTaxi_Simulation/main/src/data/${dataName}.json`);
-  // const res = axios.get(`./data/${dataName}.json`);
+  // const res = axios.get(`https://raw.githubusercontent.com/HNU209/Disabled-callTaxi_Simulation/main/src/data/${dataName}.json`);
+  const res = axios.get(`./data/${dataName}.json`);
   const result = res.then(r => r.data);
   return result;
 }
 
 const App = () => {
   const minTime = 360;
-  const maxTime = 1800;
+  const maxTime = 1599;
   const initTripData = 1;
 
   const [time, setTime] = useState(minTime);
   const [data, setData] = useState({
     DRIVER_TRIP: [],
+    RELOCATION_TRIP: [],
+    GARAGE_MARKER: [],
     DRIVER_MARKER: [],
     PASSENGER_MARKER: [],
+    RESULT : [],
     check: [],
   });
   const [loaded, setLoaded] = useState(false);
@@ -33,16 +37,22 @@ const App = () => {
     async function getFetchData() {
       const startTimeArray = [...Array(initTripData).keys()].map(t => t + minTime);
 
-      const TRIP_DATA = await getRestData('trip');
+      const DRIVER_TRIP = await getRestData('trip');
+      const RELOCATION_TRIP = await getRestData('relocation_trip');
+      const GARAGE_MARKER = await getRestData('addr_inf');
       const DRIVER_MARKER = await getRestData('vehicle_marker');
       const PASSENGER_MARKER = await getRestData('passenger_marker');
-      
-      if (TRIP_DATA && DRIVER_MARKER && PASSENGER_MARKER) {
+      const RESULT = await getRestData('result');
+
+      if (DRIVER_TRIP && RELOCATION_TRIP && GARAGE_MARKER && DRIVER_MARKER && PASSENGER_MARKER && RESULT) {
         setData(prev => ({
           ...prev,
-          DRIVER_TRIP: [...data.DRIVER_TRIP, ...TRIP_DATA],
+          DRIVER_TRIP: [...data.DRIVER_TRIP, ...DRIVER_TRIP],
+          RELOCATION_TRIP: [...data.RELOCATION_TRIP, ...RELOCATION_TRIP],
+          GARAGE_MARKER: [...data.GARAGE_MARKER, ...GARAGE_MARKER],
           DRIVER_MARKER: [...data.DRIVER_MARKER, ...DRIVER_MARKER],
           PASSENGER_MARKER: [...data.PASSENGER_MARKER, ...PASSENGER_MARKER],
+          RESULT: [...data.RESULT, ...RESULT],
           check: [...data.check, ...startTimeArray]
         }));
         setLoaded(true);
@@ -75,6 +85,14 @@ const App = () => {
           >
           </Trip>
           <Slider id="slider" value={time} min={minTime} max={maxTime} onChange={SliderChange} track="inverted"/>
+          <Report
+            data={data}
+            minTime={minTime}
+            maxTime={maxTime}
+            time={time}
+            setTime={setTime}
+          >
+          </Report>
         </>
         :
         <Splash />
