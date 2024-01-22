@@ -1,18 +1,19 @@
 {
   "files": {
-    "main.css": "/Disabled-callTaxi_Simulation/static/css/main.3e643ebb.css",
-    "main.js": "/Disabled-callTaxi_Simulation/static/js/main.7784737a.js",
-    "static/js/483.f0267484.chunk.js": "/Disabled-callTaxi_Simulation/static/js/483.f0267484.chunk.js",
+    "main.css": "/Disabled-callTaxi_Simulation/static/css/main.71418908.css",
+    "main.js": "/Disabled-callTaxi_Simulation/static/js/main.cc81f2c6.js",
+    "static/js/483.e7684cea.chunk.js": "/Disabled-callTaxi_Simulation/static/js/483.e7684cea.chunk.js",
     "static/js/787.517743f0.chunk.js": "/Disabled-callTaxi_Simulation/static/js/787.517743f0.chunk.js",
     "service-worker.js": "/Disabled-callTaxi_Simulation/service-worker.js",
+    "static/media/legend.png": "/Disabled-callTaxi_Simulation/static/media/legend.1f19018d312adc943d23.png",
     "index.html": "/Disabled-callTaxi_Simulation/index.html",
-    "main.3e643ebb.css.map": "/Disabled-callTaxi_Simulation/static/css/main.3e643ebb.css.map",
-    "main.7784737a.js.map": "/Disabled-callTaxi_Simulation/static/js/main.7784737a.js.map",
-    "483.f0267484.chunk.js.map": "/Disabled-callTaxi_Simulation/static/js/483.f0267484.chunk.js.map",
+    "main.71418908.css.map": "/Disabled-callTaxi_Simulation/static/css/main.71418908.css.map",
+    "main.cc81f2c6.js.map": "/Disabled-callTaxi_Simulation/static/js/main.cc81f2c6.js.map",
+    "483.e7684cea.chunk.js.map": "/Disabled-callTaxi_Simulation/static/js/483.e7684cea.chunk.js.map",
     "787.517743f0.chunk.js.map": "/Disabled-callTaxi_Simulation/static/js/787.517743f0.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3e643ebb.css",
-    "static/js/main.7784737a.js"
+    "static/css/main.71418908.css",
+    "static/js/main.cc81f2c6.js"
   ]
 }
