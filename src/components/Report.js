@@ -1,6 +1,6 @@
 import {useEffect, useState } from 'react';
 import '../css/report.css'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, registerables  } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, registerables } from "chart.js";
 import { Pie, Bar } from 'react-chartjs-2';
 import legendImg from '../image/legend.png';
 
@@ -15,38 +15,42 @@ const currResult = (data, time) => {
 export default function Report(props){
 
     const CURRENT_RESULT = currResult(props.data.RESULT, props.time);
+    const CURRENT_WAITING_TIME = CURRENT_RESULT.current_waiting_time_dict;
+    // console.log(CURRENT_WAITING_TIME);
+    // const totalWaitingTime = HISTO_DATA.reduce((acc, time) => acc + time, 0);
+    // const percentageData = HISTO_DATA.map(time => (time / totalWaitingTime) * 100);
 
-    const HISTO_DATA = CURRENT_RESULT.current_waiting_time_lst;
-    const totalWaitingTime = HISTO_DATA.reduce((acc, time) => acc + time, 0);
-    const percentageData = HISTO_DATA.map(time => (time / totalWaitingTime) * 100);
-    console.log(percentageData);
 
     const data1 = {
-        labels: ['In-service vehicles', 'Idle vehicles'],
+        labels: ['Dispatched vehicles', 'Occupied vehicles', 'Idle vehicles', 'Relocated vehicles'],
         datasets: [
           {
-            label: 'taxi',
-            data: [CURRENT_RESULT.driving_vehicle_num, CURRENT_RESULT.empty_vehicle_num],
+            label: 'count',
+            data: [CURRENT_RESULT.dispatched_vehicle_num, CURRENT_RESULT.occupied_vehicle_num, 
+                CURRENT_RESULT.empty_vehicle_num, CURRENT_RESULT.relocation_vehicle_num],
             
             backgroundColor: [
-                'rgba(253, 231, 37, 0.5)',
-                'rgba(94, 201, 98, 0.5)'
+                'rgba(23, 184, 190, 0.8)',
+                'rgba(255, 153, 51, 0.8)',
+                'rgba(255, 255, 255, 1.0)',
+                'rgba(0, 153, 0, 0.8)',
             ],
             borderColor: [
-                'rgba(253, 231, 37, 0.5)',
-                'rgba(94, 201, 98, 0.5)'
+                'rgba(23, 184, 190, 0.8)',
+                'rgba(255, 153, 51, 0.8)',
+                'rgba(255, 255, 255, 1.0)',
+                'rgba(0, 153, 0, 0.8)',
             ],
             borderWidth: 0,
           },
         ],
       };
-
     const data2 = {
-        labels: [0,5,10,15,20,25,30,35,40,45,50,55,60],
+        labels: [5, 15, 25, 35, 45, 55],
         datasets: [
           {
             label: 'passenger (%)',
-            data: percentageData,
+            data: Object.values(CURRENT_WAITING_TIME),
             borderColor: 'blue',
             Color: 'blue',
             fill: true,
@@ -73,7 +77,7 @@ export default function Report(props){
                 }
             },
         }
-    }
+    }    
     const options2= {
         maintainAspectRatio: false,
         responsive: true,
@@ -87,10 +91,15 @@ export default function Report(props){
         },
         scales: {
             x: {
+                type: 'linear',
                 ticks: {
-                    color: 'white'
-                }
-                ,
+                    color: 'white',
+                    stepSize: 10,
+                    max: 60,
+                    callback: function (value) {
+                        return value.toString();
+                    }
+                },
                 title: {
                     display: true,
                     align: 'center',

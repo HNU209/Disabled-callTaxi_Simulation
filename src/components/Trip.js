@@ -183,12 +183,12 @@ const Trip = (props) => {
         TIME : {(String(parseInt(Math.round(time) / 60) % 24).length === 2) ? parseInt(Math.round(time) / 60) % 24 : '0'+String(parseInt(Math.round(time) / 60) % 24)} : {(String(Math.round(time) % 60).length === 2) ? Math.round(time) % 60 : '0'+String(Math.round(time) % 60)}
       </h1>
       <div className='subtext'>
-        <div>- Number of In-service vehicles&nbsp;: {CURRENT_RESULT.driving_vehicle_num}</div>
-        <div>- Number of Idle vehicles&nbsp;: {CURRENT_RESULT.empty_vehicle_num}</div>
-        <div>- Number of passengers waiting&nbsp;: {CURRENT_RESULT.waiting_passenger_num}</div>
-        <div>- Current average waiting time&nbsp;: {CURRENT_RESULT.average_waiting_time}</div>
-        <div>- Cumulative number of passengers successfully dispatched&nbsp;: {CURRENT_RESULT.success_passenger_cumNum}</div>
-        <div>- Cumulative number of passengers failed dispatched&nbsp;: {CURRENT_RESULT.fail_passenger_cumNum}</div>
+        <div>- Total number of Vehicles in-service&nbsp; {CURRENT_RESULT.driving_vehicle_num+CURRENT_RESULT.empty_vehicle_num}</div>
+        <div>- Number of Vehicles in Service&nbsp;: {CURRENT_RESULT.driving_vehicle_num}</div>
+        <div>- Number of Idle Vehicles&nbsp;: {CURRENT_RESULT.empty_vehicle_num+CURRENT_RESULT.relocation_vehicle_num}</div>
+        <div>- Number of Waiting Passengers&nbsp;: {CURRENT_RESULT.waiting_passenger_num}</div>
+        <div>- Current Average Waiting Time (minute)&nbsp;: {CURRENT_RESULT.average_waiting_time}</div>
+        <div>- Cumulative Number of Request Failure&nbsp;: {CURRENT_RESULT.fail_passenger_cumNum}</div>
       </div>
     </div>
   );
